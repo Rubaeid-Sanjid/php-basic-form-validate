@@ -48,3 +48,9 @@ main{
     justify-content: center;
     margin-bottom: 6px;
 }
+
+.title{
+    font-size: large;
+    color: red;
+    background-color: red;
+}

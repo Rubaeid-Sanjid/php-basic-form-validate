@@ -1,4 +1,7 @@
 <?php
+
+$borrow_message = "";
+
 if (isset($_POST["submit"])) {
 
     if(preg_match("/^[A-Z]/", $_POST["studentName"])){
@@ -46,9 +49,8 @@ if (isset($_POST["submit"])) {
             $bookTitle = str_replace(" ", "", $_POST['bookTitle']);
 
             foreach($_COOKIE as $cookieName=>$cookieValue){
-                echo $cookieName."<br>";
                 if($cookieName == $bookTitle){
-                    echo "Sorry, This book is already borrowed.";
+                    $borrow_message = "Sorry, This book is already borrowed.";
                 }
             }
         }else{
@@ -69,20 +71,29 @@ if (isset($_POST["submit"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Borrow Receipt</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div>
         <h2>Thanks for booking.</h2>
-        <div>
-            <h3>Student Name: <?php echo $studentName ?></h3>
-            <h3>Student ID: <?php echo $studentID ?></h3>
-            <h3>Student Email: <?php echo $studentEmail ?></h3>
-            <h3>Book Name: <?php echo $bookTitle ?></h3>
-            <h3>Borrow date: <?php echo $borrow_date ?></h3>
-            <h3>Token: <?php echo $token ?></h3>
-            <h3>Return date: <?php echo $return_date  ?></h3>
-            <h3>Fees: <?php echo $fees  ?></h3>
-        </div>
+
+        <?php 
+            if($borrow_message)
+            {
+                echo $borrow_message;
+            }else {
+                echo '<div>
+                        <h3>Student Name: '.$studentName . '</h3>
+                        <h3>Student ID: '.$studentID .'</h3>
+                        <h3>Student Email: '.$studentEmail .'</h3>
+                        <h3>Book Name: '.$bookTitle .'</h3>
+                        <h3>Borrow date: '.$borrow_date .'</h3>
+                        <h3>Token: '.$token .'</h3>
+                        <h3>Return date: '.$return_date .'</h3>
+                        <h3>Fees: '.$fees .'</h3>
+                    </div>';
+            }
+        ?>
     </div>
 </body>
 </html>
