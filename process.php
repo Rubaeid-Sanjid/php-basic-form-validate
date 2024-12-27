@@ -1,25 +1,29 @@
 <?php
 
 $borrow_message = "";
+$isValid = true;
 
 if (isset($_POST["submit"])) {
 
-    if(preg_match("/^[A-Z]/", $_POST["studentName"])){
+    if(preg_match("/^[A-Z][a-z]$/", $_POST["studentName"])){
         $studentName = $_POST["studentName"];
     }else{
-        echo "Invalid student name <br>";
+        $studentName = "Invalid student name <br>";
+        $isValid = false;
     }
 
     if(preg_match("/^\d{2}-\d{5}-\d{1}$/", $_POST["studentID"])){
         $studentID = $_POST["studentID"];
     }else{
-        echo "Invalid student ID <br>";
+        $studentID = "Invalid student ID <br>";
+        $isValid = false;
     }
 
     if(preg_match("/^\d{2}-\d{5}-\d{1}+\@+(student)+\.(aiub)+\.(edu)/", $_POST["studentEmail"])){
         $studentEmail = $_POST["studentEmail"];
     }else{
-        echo "Invalid student Email <br>";
+        $studentEmail = "Invalid student Email <br>";
+        $isValid = false;
     }
 
     if(isset($_POST["bookTitle"])){
@@ -75,14 +79,14 @@ if (isset($_POST["submit"])) {
 </head>
 <body>
     <div>
-        <h2>Thanks for booking.</h2>
-
+        
         <?php 
             if($borrow_message)
             {
                 echo $borrow_message;
             }else {
                 echo '<div>
+                        <h2 style="color: green;">Thanks for booking.</h2>
                         <h3>Student Name: '.$studentName . '</h3>
                         <h3>Student ID: '.$studentID .'</h3>
                         <h3>Student Email: '.$studentEmail .'</h3>
