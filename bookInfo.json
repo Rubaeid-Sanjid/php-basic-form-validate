@@ -3,10 +3,20 @@
     "name": "Invalid student name <br>",
     "student_Id": "21-45844-3",
     "student_email": "21-45844-3@student.aiub.edu",
-    "bookTitle": "Web Tech",
+    "bookTitle": "Book4",
     "borrow_date": "2025-01-07",
-    "token": "123",
+    "token": "200",
     "return_date": "2025-01-10",
-    "fees": "2000"
+    "fees": "3000"
+  },
+  {
+    "name": "Invalid student name <br>",
+    "student_Id": "21-45844-3",
+    "student_email": "21-45844-3@student.aiub.edu",
+    "bookTitle": "Book2",
+    "borrow_date": "2025-01-07",
+    "token": "333",
+    "return_date": "2025-01-13",
+    "fees": "5000"
   }
 ]

@@ -12,24 +12,48 @@
     <main>
         <aside class="left-box">
             <?php
-                $jsonData = file_get_contents('bookInfo.json');
-                $jsonArray = json_decode($jsonData, true);
+            $jsonData = file_get_contents('bookInfo.json');
+            $jsonArray = json_decode($jsonData, true);
 
-                foreach($jsonArray as $item){
-                    if(isset($item['token'])){
-                        echo $item['token'];
-                    }
-                }  
+            foreach ($jsonArray as $item) {
+                if (isset($item['token'])) {
+                    echo $item['token'];
+                }
+            }
             ?>
         </aside>
 
         <div>
             <section>
                 <div class="box1">
-                    <h2>All Availa Books</h2>
+                    <h2>All Available Books</h2>
                 </div>
-                <div class="box1"></div>
-                <div class="box1"></div>
+
+                <div class="box1">
+                    <h2>Update Books</h2>
+
+
+                </div>
+
+                <div class="box1">
+                    <h2>Add Books</h2>
+
+                    <form action="" method="post">
+                        <label for="bookName">Book Name</label>
+                        <input class="input" type="text" name="bookName">
+                        <br>
+
+                        <label for="authorName">Author Name</label>
+                        <input class="input" type="text" name="authorName">
+                        <br>
+
+                        <label for="quantity">Quantity</label>
+                        <input class="input" type="text" name="quantity">
+                        <br>
+
+                        <input class="input" type="submit" name="addBook" value="Add Book">
+                    </form>
+                </div>
             </section>
 
             <section class="section2">
@@ -46,13 +70,13 @@
                         <input class="input" type="text" name="studentID" placeholder="Student ID">
                         <input class="input" type="email" name="studentEmail" placeholder="Email">
                         <!-- <input class="input" type="text" name="bookTitle" placeholder="Book Title"> -->
-                        <select name="" id="" style="height: 30px;">
+                        <select name="bookTitle" id="" class="input">
                             <option value="Book1">Select Book</option>
                             <option value="Book1">Book 1</option>
                             <option value="Book2">Book 2</option>
                             <option value="Book3">Book 3</option>
                             <option value="Book4">Book 4</option>
-                            </select>
+                        </select>
                         <input class="input" type="date" name="borrowDate" placeholder="Borrow Date">
                         <input class="input" type="text" name="token" placeholder="Token">
                         <input class="input" type="date" name="returnDate" placeholder="Return Date">
