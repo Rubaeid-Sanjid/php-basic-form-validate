@@ -10,11 +10,24 @@
 
 <body>
     <main>
-        <aside class="left-box"></aside>
+        <aside class="left-box">
+            <?php
+                $jsonData = file_get_contents('bookInfo.json');
+                $jsonArray = json_decode($jsonData, true);
+
+                foreach($jsonArray as $item){
+                    if(isset($item['token'])){
+                        echo $item['token'];
+                    }
+                }  
+            ?>
+        </aside>
 
         <div>
             <section>
-                <div class="box1"></div>
+                <div class="box1">
+                    <h2>All Availa Books</h2>
+                </div>
                 <div class="box1"></div>
                 <div class="box1"></div>
             </section>
@@ -32,7 +45,14 @@
                         <input class="input" type="text" name="studentName" placeholder="Student Name">
                         <input class="input" type="text" name="studentID" placeholder="Student ID">
                         <input class="input" type="email" name="studentEmail" placeholder="Email">
-                        <input class="input" type="text" name="bookTitle" placeholder="Book Title">
+                        <!-- <input class="input" type="text" name="bookTitle" placeholder="Book Title"> -->
+                        <select name="" id="" style="height: 30px;">
+                            <option value="Book1">Select Book</option>
+                            <option value="Book1">Book 1</option>
+                            <option value="Book2">Book 2</option>
+                            <option value="Book3">Book 3</option>
+                            <option value="Book4">Book 4</option>
+                            </select>
                         <input class="input" type="date" name="borrowDate" placeholder="Borrow Date">
                         <input class="input" type="text" name="token" placeholder="Token">
                         <input class="input" type="date" name="returnDate" placeholder="Return Date">

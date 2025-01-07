@@ -64,6 +64,38 @@ if (isset($_POST["submit"])) {
 
     $token = $_POST["token"];
     $fees = $_POST["fees"];
+
+    // sending data into json
+    $formData = array(
+        'name' => $studentName,
+        'student_Id' => $studentID,
+        'student_email' => $studentEmail,
+        'bookTitle' => $bookTitle,
+        'borrow_date' => $borrow_date,
+        'token' => $token,
+        'return_date' => $return_date,
+        'fees' => $fees,
+    );
+
+    $jsonFile = 'bookInfo.json';
+
+    if (file_exists($jsonFile)) {
+        $jsonData = file_get_contents($jsonFile);
+        $jsonArray = json_decode($jsonData, true);
+    } else {
+        $jsonArray = array();
+    }
+
+    $jsonArray[] = $formData;
+
+    $jsonData = json_encode($jsonArray);
+
+    if (file_put_contents($jsonFile, $jsonData)) {
+        echo "Data successfully saved to JSON file!";
+    } else {
+        echo "Error saving data to JSON file!";
+    }
+    
 } else {
     echo "No data provided.";
 }
