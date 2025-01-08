@@ -38,7 +38,7 @@
                 <div class="box1">
                     <h2>Add Books</h2>
 
-                    <form action="" method="post">
+                    <form action="bookProcess.php" method="post">
                         <label for="bookName">Book Name</label>
                         <input class="input" type="text" name="bookName">
                         <br>

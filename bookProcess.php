@@ -1,6 +1,6 @@
 <?php 
     if(isset($_POST['addBook'])){
-        $conn = mysqli_connect("localhost", "root", "", "booksInfo");
+        $conn = mysqli_connect("localhost", "root", "", "books_info");
 
         if($conn){
 
@@ -11,9 +11,12 @@
             $sql = "INSERT INTO booksInfo (book_Name, author_Name, quantity) VALUES ('$bookName', '$authorName', '$quantity')";
 
             $result = mysqli_query($conn, $sql);
-            $count = mysqli_num_rows($result);
 
-            
+            if($result){
+                echo "Book added successfully.";
+            }else{
+                echo "Failed to add book.";
+            }
         }
     }
 ?>
