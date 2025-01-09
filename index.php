@@ -28,31 +28,79 @@
                 <div class="box1">
                     <h2 style="text-align: center;">All Available Books</h2>
                     <div class="allbooks">
-                    <?php
-                    include('connect.php');
+                        <?php
+                        include('connect.php');
 
-                    $sql = 'SELECT * FROM booksInfo';
+                        $sql = 'SELECT * FROM booksInfo';
 
-                    $result = mysqli_query($conn, $sql);
+                        $result = mysqli_query($conn, $sql);
 
-                    if ($result) {
-                        $allBooks = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                        foreach ($allBooks as $book) {
-                            echo '<div class="bookCart">
+                        if ($result) {
+                            $allBooks = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                            foreach ($allBooks as $book) {
+                                echo '<div class="bookCart">
                                 <h4>Book Name: ' . $book['book_Name'] . '</h4>
                                 <h4>Author Name: ' . $book['author_Name'] . '</h4>
                                 <h4>Quantity: ' . $book['quantity'] . '</h4>
                                 </div> ';
+                            }
                         }
-                    }
-                    ?>
+                        ?>
                     </div>
                 </div>
 
                 <div class="box1">
                     <h2 style="text-align: center;">Update Books</h2>
 
+                    <form action="" method="get">
+                        <div class="bookFormRow">
+                            <label for="bookName">Search</label>
+                            <input class="input" type="text" name="searchValue" id="bookName">
+                            <input class="input" type="submit" name="searchBook" value="Search Book">
+                        </div>
+                    </form>
 
+                    <form action="bookProcess.php" method="post" style="display: flex; flex-direction: column; gap: 10px;">
+
+                        <?php
+                        if (isset($_GET['searchBook'])) {
+                            include('connect.php');
+
+                            $searchValue = mysqli_real_escape_string($conn, $_GET['searchValue']);
+
+                            $sql = is_numeric($searchValue)
+                                ? "SELECT * FROM booksInfo WHERE id=$searchValue"
+                                : "SELECT * FROM booksInfo WHERE book_Name='$searchValue'";
+
+                            $result = mysqli_query($conn, $sql);
+                            $book = mysqli_fetch_assoc($result);
+
+                            if ($book) {
+                                $bookName = $book['book_Name'];
+                                $authorName = $book['author_Name'];
+                                $quantity = $book['quantity'];
+                        ?>
+                                <div class="bookFormRow">
+                                    <label for="bookName">Book Name:</label>
+                                    <input class="input" type="text" name="bookName" id="bookName" value="<?php echo $bookName; ?>">
+                                </div>
+                                <div class="bookFormRow">
+                                    <label for="authorName">Author Name:</label>
+                                    <input class="input" type="text" name="authorName" id="authorName" value="<?php echo $authorName; ?>">
+                                </div>
+                                <div class="bookFormRow">
+                                    <label for="quantity">Quantity:</label>
+                                    <input class="input" type="text" name="quantity" id="quantity" value="<?php echo $quantity; ?>">
+                                </div>
+                                <div class="bookFormRow">
+                                    <input class="input" type="submit" name="updateBook" value="Update Book">
+                                </div>
+                        <?php
+                            }
+                        }
+                        ?>
+
+                    </form>
                 </div>
 
                 <div class="box1">
