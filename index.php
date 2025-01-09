@@ -17,7 +17,7 @@
 
             foreach ($jsonArray as $item) {
                 if (isset($item['token'])) {
-                    echo $item['token'];
+                    echo 'Token: ' . $item["token"] . '<br>';
                 }
             }
             ?>
@@ -26,33 +26,56 @@
         <div>
             <section>
                 <div class="box1">
-                    <h2>All Available Books</h2>
+                    <h2 style="text-align: center;">All Available Books</h2>
+                    <div class="allbooks">
+                    <?php
+                    include('connect.php');
+
+                    $sql = 'SELECT * FROM booksInfo';
+
+                    $result = mysqli_query($conn, $sql);
+
+                    if ($result) {
+                        $allBooks = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                        foreach ($allBooks as $book) {
+                            echo '<div class="bookCart">
+                                <h4>Book Name: ' . $book['book_Name'] . '</h4>
+                                <h4>Author Name: ' . $book['author_Name'] . '</h4>
+                                <h4>Quantity: ' . $book['quantity'] . '</h4>
+                                </div> ';
+                        }
+                    }
+                    ?>
+                    </div>
                 </div>
 
                 <div class="box1">
-                    <h2>Update Books</h2>
+                    <h2 style="text-align: center;">Update Books</h2>
 
 
                 </div>
 
                 <div class="box1">
-                    <h2>Add Books</h2>
+                    <h2 style="text-align: center;">Add Books</h2>
 
-                    <form action="bookProcess.php" method="post">
-                        <label for="bookName">Book Name</label>
-                        <input class="input" type="text" name="bookName">
-                        <br>
-
-                        <label for="authorName">Author Name</label>
-                        <input class="input" type="text" name="authorName">
-                        <br>
-
-                        <label for="quantity">Quantity</label>
-                        <input class="input" type="text" name="quantity">
-                        <br>
-
-                        <input class="input" type="submit" name="addBook" value="Add Book">
+                    <form action="bookProcess.php" method="post" style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="bookFormRow">
+                            <label for="bookName">Book Name:</label>
+                            <input class="input" type="text" name="bookName" id="bookName">
+                        </div>
+                        <div class="bookFormRow">
+                            <label for="authorName">Author Name:</label>
+                            <input class="input" type="text" name="authorName" id="authorName">
+                        </div>
+                        <div class="bookFormRow">
+                            <label for="quantity">Quantity:</label>
+                            <input class="input" type="text" name="quantity" id="quantity">
+                        </div>
+                        <div class="bookFormRow">
+                            <input class="input" type="submit" name="addBook" value="Add Book">
+                        </div>
                     </form>
+
                 </div>
             </section>
 
