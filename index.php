@@ -27,6 +27,7 @@
             <section>
                 <div class="box1">
                     <h2 style="text-align: center;">All Available Books</h2>
+
                     <div class="allbooks">
                         <?php
                         include('connect.php');
@@ -37,12 +38,13 @@
 
                         if ($result) {
                             $allBooks = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
                             foreach ($allBooks as $book) {
                                 echo '<div class="bookCart">
-                                <h4>Book Name: ' . $book['book_Name'] . '</h4>
-                                <h4>Author Name: ' . $book['author_Name'] . '</h4>
-                                <h4>Quantity: ' . $book['quantity'] . '</h4>
-                                </div> ';
+                                        <h4>Book Name: ' . $book['book_Name'] . '</h4>
+                                        <h4>Author Name: ' . $book['author_Name'] . '</h4>
+                                        <h4>Quantity: ' . $book['quantity'] . '</h4>
+                                    </div> ';
                             }
                         }
                         ?>
@@ -52,12 +54,10 @@
                 <div class="box1">
                     <h2 style="text-align: center;">Update Books</h2>
 
-                    <form action="" method="get">
-                        <div class="bookFormRow">
+                    <form action="" method="get" class="bookFormRow">
                             <label for="bookName">Search</label>
                             <input class="input" type="text" name="searchValue" id="bookName">
                             <input class="input" type="submit" name="searchBook" value="Search Book">
-                        </div>
                     </form>
 
                     <form action="bookProcess.php" method="post" style="display: flex; flex-direction: column; gap: 10px;">
@@ -76,10 +76,13 @@
                             $book = mysqli_fetch_assoc($result);
 
                             if ($book) {
+                                $bookId = $book['id'];
                                 $bookName = $book['book_Name'];
                                 $authorName = $book['author_Name'];
                                 $quantity = $book['quantity'];
                         ?>
+                                <input type="hidden" name="bookId" value="<?php echo $bookId; ?>">
+
                                 <div class="bookFormRow">
                                     <label for="bookName">Book Name:</label>
                                     <input class="input" type="text" name="bookName" id="bookName" value="<?php echo $bookName; ?>">
