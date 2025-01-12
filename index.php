@@ -146,10 +146,15 @@
                         <!-- <input class="input" type="text" name="bookTitle" placeholder="Book Title"> -->
                         <select name="bookTitle" id="" class="input">
                             <option value="Book1">Select Book</option>
-                            <option value="Book1">Book 1</option>
+                            <?php
+                            foreach ($allBooks as $book) {
+                                echo '<option value="' .$book['book_Name']. '">' .$book['book_Name']. '</option>';
+                            }                            
+                            ?>
+                            <!-- <option value="Book1">Book 1</option>
                             <option value="Book2">Book 2</option>
                             <option value="Book3">Book 3</option>
-                            <option value="Book4">Book 4</option>
+                            <option value="Book4">Book 4</option> -->
                         </select>
                         <input class="input" type="date" name="borrowDate" placeholder="Borrow Date">
                         <input class="input" type="text" name="token" placeholder="Token">
