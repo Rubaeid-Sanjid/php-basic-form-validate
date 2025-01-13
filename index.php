@@ -40,7 +40,7 @@
                             $allBooks = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
                             foreach ($allBooks as $book) {
-                                echo '<div class="bookCart">
+                                echo '<div class="bookCard">
                                         <h4>Book Name: ' . $book['book_Name'] . '</h4>
                                         <h4>Author Name: ' . $book['author_Name'] . '</h4>
                                         <h4>Quantity: ' . $book['quantity'] . '</h4>
@@ -55,9 +55,9 @@
                     <h2 style="text-align: center;">Update Books</h2>
 
                     <form action="" method="get" class="bookFormRow">
-                            <label for="bookName">Search</label>
-                            <input class="input" type="text" name="searchValue" id="bookName">
-                            <input class="input" type="submit" name="searchBook" value="Search Book">
+                        <label for="bookName">Search</label>
+                        <input class="input" type="text" name="searchValue" id="bookName">
+                        <input class="input" type="submit" name="searchBook" value="Search Book">
                     </form>
 
                     <form action="bookProcess.php" method="post" style="display: flex; flex-direction: column; gap: 10px;">
@@ -66,7 +66,7 @@
                         if (isset($_GET['searchBook'])) {
                             include('connect.php');
 
-                            $searchValue = mysqli_real_escape_string($conn, $_GET['searchValue']);
+                            $searchValue = $_GET['searchValue'];
 
                             $sql = is_numeric($searchValue)
                                 ? "SELECT * FROM booksInfo WHERE id=$searchValue"
@@ -98,8 +98,11 @@
                                 <div class="bookFormRow">
                                     <input class="input" type="submit" name="updateBook" value="Update Book">
                                 </div>
-                        <?php
-                            }
+                            <?php
+                            } 
+                            // else {
+                            //     echo "There is no such book available.";
+                            // }
                         }
                         ?>
 
@@ -148,8 +151,8 @@
                             <option value="Book1">Select Book</option>
                             <?php
                             foreach ($allBooks as $book) {
-                                echo '<option value="' .$book['book_Name']. '">' .$book['book_Name']. '</option>';
-                            }                            
+                                echo '<option value="' . $book['book_Name'] . '">' . $book['book_Name'] . '</option>';
+                            }
                             ?>
                             <!-- <option value="Book1">Book 1</option>
                             <option value="Book2">Book 2</option>

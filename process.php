@@ -1,101 +1,101 @@
 <?php
 
-$borrow_message = "";
-$isValid = true;
-
 if (isset($_POST["submit"])) {
+    $error_message = "";
 
-    if(preg_match("/^[A-Z][a-z]$/", $_POST["studentName"])){
+    if (preg_match("/^[A-Za-z ]+$/", $_POST["studentName"])) {
         $studentName = $_POST["studentName"];
-    }else{
-        $studentName = "Invalid student name <br>";
-        $isValid = false;
+    } else {
+        $error_message .= "Invalid student name. Must start with a capital letter and contain only letters and spaces.<br>";
     }
 
-    if(preg_match("/^\d{2}-\d{5}-\d{1}$/", $_POST["studentID"])){
+    if (preg_match("/^\d{2}-\d{5}-\d{1}$/", $_POST["studentID"])) {
         $studentID = $_POST["studentID"];
-    }else{
-        $studentID = "Invalid student ID <br>";
-        $isValid = false;
+    } else {
+        $error_message .= "Invalid student ID. Format must be NN-NNNNN-N.<br>";
     }
 
-    if(preg_match("/^\d{2}-\d{5}-\d{1}+\@+(student)+\.(aiub)+\.(edu)/", $_POST["studentEmail"])){
+    if (preg_match("/^\d{2}-\d{5}-\d{1}@student\.aiub\.edu$/", $_POST["studentEmail"])) {
         $studentEmail = $_POST["studentEmail"];
-    }else{
-        $studentEmail = "Invalid student Email <br>";
-        $isValid = false;
+    } else {
+        $error_message .= "Invalid student email. Format must be NN-NNNNN-N@student.aiub.edu.<br>";
     }
 
-    if(isset($_POST["bookTitle"])){
+    // Set bookTitle and cookie details
+    if (isset($_POST["bookTitle"])) {
         $bookTitle = $_POST["bookTitle"];
-
-        $cookie_name = str_replace(" ", "", $_POST["bookTitle"]);
+        $cookie_name = str_replace(" ", "", $bookTitle);
         $cookie_value = $_POST["studentName"];
     }
 
-    if (isset($_POST["borrowDate"], $_POST["returnDate"])) {
+    function validateToken($token) {
+        $validTokens = ["123", "456", "789"];
+        return in_array($token, $validTokens);
+    }
 
+    if (isset($_POST["borrowDate"], $_POST["returnDate"])) {
         $borrow_date = $_POST["borrowDate"];
         $return_date = $_POST["returnDate"];
+        $token = isset($_POST["token"]) ? $_POST["token"] : null;
 
-        $borrowDate = new DateTime($_POST["borrowDate"]);
-        $returnDate = new DateTime($_POST["returnDate"]);
-        
+        $borrowDate = new DateTime($borrow_date);
+        $returnDate = new DateTime($return_date);
+
         if ($borrowDate < $returnDate) {
             $dateDifference = date_diff($borrowDate, $returnDate);
 
-            setcookie($cookie_name, $cookie_value, time() + 10);
-            // setcookie($cookie_name, $cookie_value, time() + (60*60*24 * $dateDifference->days));
-        }
-
-        if(isset($_COOKIE[$cookie_name])) {
-            // echo "Cookie is set. <br>";
-            $bookTitle = str_replace(" ", "", $_POST['bookTitle']);
-
-            foreach($_COOKIE as $cookieName=>$cookieValue){
-                if($cookieName == $bookTitle){
-                    $borrow_message = "Sorry, This book is already borrowed.";
+            if ($dateDifference->days <= 10) {
+                setcookie($cookie_name, $cookie_value, time() + 10);
+                echo "<p style='color: green;'>Book borrowed successfully for {$dateDifference->days} days.</p>";
+            } else {
+                if ($token && validateToken($token)) {
+                    // setcookie($cookie_name, $cookie_value, time() + (60*60*24* $dateDifference->days));
+                    setcookie($cookie_name, $cookie_value, time() + 10);
+                    echo "<p style='color: green;'>Book borrowed successfully for {$dateDifference->days} days with token verification.</p>";
+                } else {
+                    $error_message .= "Borrowing for more than 10 days requires a valid token.<br>";
                 }
             }
-        }else{
-            // echo "Cookie not found.<br>";
+        } else {
+            $error_message .= "Return date must be after the borrow date.<br>";
         }
     }
 
-    $token = $_POST["token"];
-    $fees = $_POST["fees"];
-
-    // sending data into json
-    $formData = array(
-        'name' => $studentName,
-        'student_Id' => $studentID,
-        'student_email' => $studentEmail,
-        'bookTitle' => $bookTitle,
-        'borrow_date' => $borrow_date,
-        'token' => $token,
-        'return_date' => $return_date,
-        'fees' => $fees,
-    );
-
-    $jsonFile = 'bookInfo.json';
-
-    if (file_exists($jsonFile)) {
-        $jsonData = file_get_contents($jsonFile);
-        $jsonArray = json_decode($jsonData, true);
-    } else {
-        $jsonArray = array();
+    // Check if the book is already borrowed using cookies
+    if (isset($_COOKIE[$cookie_name])) {
+        foreach ($_COOKIE as $cookieName => $cookieValue) {
+            if ($cookieName == $cookie_name) {
+                $error_message .= "Sorry, this book is already borrowed.<br>";
+                break;
+            }
+        }
     }
 
-    $jsonArray[] = $formData;
+    // send data to json
+    if (empty($error_message)) {
+        $formData = array(
+            'name' => $studentName,
+            'student_Id' => $studentID,
+            'student_email' => $studentEmail,
+            'bookTitle' => $bookTitle,
+            'borrow_date' => $borrow_date,
+            'token' => $token,
+            'return_date' => $return_date,
+            'fees' => $_POST["fees"],
+        );
 
-    $jsonData = json_encode($jsonArray);
+        $jsonFile = 'bookInfo.json';
+        $jsonArray = file_exists($jsonFile) ? json_decode(file_get_contents($jsonFile), true) : array();
+        $jsonArray[] = $formData;
 
-    if (file_put_contents($jsonFile, $jsonData)) {
-        echo "Data successfully saved to JSON file!";
+        if (file_put_contents($jsonFile, json_encode($jsonArray))) {
+            echo "Data successfully saved to JSON file!";
+        } else {
+            echo "Error saving data to JSON file!";
+        }
     } else {
-        echo "Error saving data to JSON file!";
+        echo "<p style='color: red;'>$error_message</p>";
     }
-    
 } else {
     echo "No data provided.";
 }
@@ -113,9 +113,9 @@ if (isset($_POST["submit"])) {
     <div>
         
         <?php 
-            if($borrow_message)
+            if($error_message)
             {
-                echo $borrow_message;
+                echo $error_message;
             }else {
                 echo '<div>
                         <h2 style="color: green;">Thanks for booking.</h2>
