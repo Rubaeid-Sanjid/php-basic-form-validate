@@ -154,10 +154,6 @@
                                 echo '<option value="' . $book['book_Name'] . '">' . $book['book_Name'] . '</option>';
                             }
                             ?>
-                            <!-- <option value="Book1">Book 1</option>
-                            <option value="Book2">Book 2</option>
-                            <option value="Book3">Book 3</option>
-                            <option value="Book4">Book 4</option> -->
                         </select>
                         <input class="input" type="date" name="borrowDate" placeholder="Borrow Date">
                         <input class="input" type="text" name="token" placeholder="Token">
@@ -167,7 +163,18 @@
                     </form>
                 </div>
 
-                <div class="box2"></div>
+                <div class="box3">
+                    <h3>Available Tokens</h3>
+                    <?php
+                    include('./utils.php');
+
+                    $validTokens = getAllTokens();
+
+                    foreach($validTokens as $availableToken){
+                        echo 'Token: ' . $availableToken . '<br>';
+                     }
+                    ?>
+                </div>
             </section>
         </div>
 

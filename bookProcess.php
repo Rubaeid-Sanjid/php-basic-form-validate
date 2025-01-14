@@ -19,7 +19,7 @@ if (isset($_POST['addBook'])) {
                 document.write('Book added successfully.');
                 setInterval(function() {
                     window.location.href = 'index.php';
-                }, 3000);
+                }, 2000);
             </script>";
         } else {
             echo "Failed to add book.";
@@ -46,7 +46,7 @@ if (isset($_POST['updateBook'])) {
                 document.write('Book updated successfully.');
                 setInterval(function() {
                     window.location.href = 'index.php';
-                }, 3000);
+                }, 2000);
             </script>";
     } else {
         echo "Failed to update.";

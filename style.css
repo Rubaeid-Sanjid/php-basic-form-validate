@@ -1,6 +1,4 @@
 .box1{
-    /* height: 100px; */
-    /* width: 100vh; */
     border: 1px solid black;
     margin-bottom: 5px;
     background-color: burlywood;
@@ -11,7 +9,12 @@
     width: 200px;
     flex-grow: 1;
     border: 1px solid black;
-    /* background-color: aquamarine; */
+}
+.box3{
+    /* width: 200px; */
+    flex-grow: 1;
+    border: 1px solid black;
+    padding: 10px;
 }
 
 .form{
@@ -34,8 +37,10 @@
 
 .allbooks{
     display: flex;
+    justify-content: center;
     gap: 6px;
     padding: 10px;
+    flex-wrap: wrap;
 }
 .bookCard{
     border: 1px solid black;
@@ -45,13 +50,12 @@
 
 .right-box{
     border: 1px solid black;
-    /* background-color: rgb(155, 33, 33); */
 }
 .left-box{
     height: 600px;
     width: 200px;
     border: 1px solid black;
-    /* background-color: rgb(155, 33, 33); */
+    padding: 10px;
 }
 
 main{
